@@ -139,5 +139,7 @@
     display: flex;
   }
 
-  transform: rotate(180deg);
+  &.isCollapsed {
+    transform: rotate(180deg);
+  }
 }
