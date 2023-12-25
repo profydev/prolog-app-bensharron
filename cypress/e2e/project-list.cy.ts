@@ -2,16 +2,14 @@ import mockProjects from "../fixtures/projects.json";
 
 describe("Project List", () => {
   beforeEach(() => {
-    // setup request mock
+    // setup request mock, delay so we can test the loading state
     cy.intercept("GET", "https://prolog-api.profy.dev/project", {
       fixture: "projects.json",
+      delay: 1000,
     }).as("getProjects");
 
     // open projects page
     cy.visit("http://localhost:3000/dashboard");
-
-    // wait for request to resolve
-    cy.wait("@getProjects");
   });
 
   context("desktop resolution", () => {
@@ -19,7 +17,21 @@ describe("Project List", () => {
       cy.viewport(1025, 900);
     });
 
+    it("shows loading circle", () => {
+      // loading state should be visible
+      cy.get("img[alt='Loading']").should("be.visible");
+
+      // wait for request to resolve
+      cy.wait("@getProjects");
+
+      // loading state should be gone
+      cy.get("img[alt='Loading']").should("not.exist");
+    });
+
     it("renders the projects", () => {
+      // wait for request to resolve
+      cy.wait("@getProjects");
+
       const languageNames = ["React", "Node.js", "Python"];
       const statusNames = ["Critical", "Warning", "Stable"];
       const badgeColors = [
