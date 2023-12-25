@@ -31,29 +31,14 @@
   height: 64px;
   width: 64px;
   animation: rotation 1s linear infinite;
-  animation: rotation 1s linear infinite;
 }
 
 @keyframes rotation {
   from {
     transform: rotate(0deg);
-    transform: rotate(0deg);
   }
 
   to {
-    transform: rotate(360deg);
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes rotation {
-  from {
-    transform: rotate(0deg);
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
     transform: rotate(360deg);
   }
 }
