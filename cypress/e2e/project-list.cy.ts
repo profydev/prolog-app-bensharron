@@ -28,6 +28,31 @@ describe("Project List", () => {
       cy.get("img[alt='Loading']").should("not.exist");
     });
 
+    it("shows error dialog after API error", () => {
+      // Simulates a network error
+      cy.intercept("GET", "https://prolog-api.profy.dev/project", {
+        forceNetworkError: true,
+      }).as("getNetworkFailure");
+
+      // open projects page
+      cy.visit("http://localhost:3000/dashboard");
+      cy.wait("@getNetworkFailure");
+
+      // Alert is visible
+      cy.get("img[alt='alert']").should("be.visible");
+
+      cy.intercept("GET", "https://prolog-api.profy.dev/project", {
+        fixture: "projects.json",
+      }).as("getProjects");
+
+      // Click retry button
+      cy.get("img[alt='retry']").should("be.visible").click();
+      cy.wait("@getProjects");
+
+      // Retry should load page
+      cy.get("main").find("ul");
+    });
+
     it("renders the projects", () => {
       // wait for request to resolve
       cy.wait("@getProjects");

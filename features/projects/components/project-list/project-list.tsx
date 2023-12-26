@@ -1,9 +1,10 @@
 import { ProjectCard } from "../project-card";
+import { ProjectError } from "../project-error";
 import { useGetProjects } from "../../api/use-get-projects";
 import styles from "./project-list.module.scss";
 
 export function ProjectList() {
-  const { data, isLoading, isError, error } = useGetProjects();
+  const { data, isLoading, isError, error, refetch } = useGetProjects();
 
   if (isLoading) {
     return (
@@ -20,7 +21,8 @@ export function ProjectList() {
 
   if (isError) {
     console.error(error);
-    return <div>Error: {error.message}</div>;
+
+    return <ProjectError refetch={refetch} />;
   }
 
   return (
