@@ -17,9 +17,7 @@ export function Footer() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/icons/logo-small.svg" alt="logo" />
       </div>
-      <div className={styles.versionWrapper}>
-        <p className={styles.version}>Version: {version}</p>
-      </div>
+      <div className={styles.version}>Version: {version}</div>
     </footer>
   );
 }
