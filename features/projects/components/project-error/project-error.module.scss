@@ -12,23 +12,10 @@
   background: color.$error-25;
 }
 
-.alertCircle {
-  color: color.$error-600;
-}
-
 .errorMsg {
   flex: 1;
   color: color.$error-700;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.25rem;
-}
-
-.retryBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  color: color.$error-700;
-  cursor: pointer;
 }

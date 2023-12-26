@@ -46,7 +46,7 @@ describe("Project List", () => {
       }).as("getProjects");
 
       // Click retry button
-      cy.get("img[alt='retry']").should("be.visible").click();
+      cy.get("main").find("button").should("be.visible").click();
       cy.wait("@getProjects");
 
       // Retry should load page
