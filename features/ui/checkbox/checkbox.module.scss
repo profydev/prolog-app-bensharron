@@ -1,0 +1,127 @@
+@use "@styles/color";
+@use "@styles/font";
+@use "@styles/space";
+
+.customCheckbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &.small {
+    gap: 0.5rem;
+  }
+
+  &.medium {
+    gap: 0.75rem;
+  }
+}
+
+.checkmark {
+  background-color: white;
+  border: 1px solid color.$gray-300;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+
+  & img {
+    display: none;
+  }
+
+  &.small {
+    width: 1rem;
+    height: 1rem;
+    padding: 0.125rem;
+    border-radius: 4px;
+
+    & img {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+  }
+
+  &.medium {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0.1875rem;
+    border-radius: 6px;
+
+    & img {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+  }
+}
+
+.label {
+  font-weight: 500;
+
+  &.small {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  &.medium {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  position: absolute;
+  margin: 0;
+
+  &:checked ~ .checkmark,
+  &:indeterminate ~ .checkmark {
+    border: 1px solid color.$primary-600;
+    background: color.$primary-50;
+
+    & svg {
+      color: color.$primary-600;
+    }
+  }
+
+  &:checked ~ .checkmark img {
+    display: block;
+    content: url("/icons/check.svg");
+  }
+
+  &:indeterminate ~ .checkmark img {
+    display: block;
+    content: url("/icons/minus.svg");
+  }
+
+  &:hover ~ .checkmark {
+    border: 1px solid color.$primary-600;
+    background: color.$primary-50;
+  }
+
+  &:focus ~ .checkmark {
+    border: 1px solid color.$primary-300;
+    box-shadow: 0 0 0 4px color.$primary-100;
+  }
+
+  &:disabled {
+    ~ .checkmark {
+      border: 1px solid color.$gray-200;
+      background: color.$gray-100;
+
+      & img {
+        color: color.$gray-200;
+      }
+    }
+
+    &:checked ~ .checkmark img {
+      content: url("/icons/check-disabled.svg");
+    }
+
+    &:indeterminate ~ .checkmark img {
+      content: url("/icons/minus-disabled.svg");
+    }
+
+    ~ .label {
+      color: color.$gray-300;
+    }
+  }
+}
