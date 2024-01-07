@@ -54,16 +54,12 @@
 }
 
 .label {
-  font-weight: 500;
-
   &.small {
-    font-size: 14px;
-    line-height: 20px;
+    font: font.$text-sm-medium;
   }
 
   &.medium {
-    font-size: 16px;
-    line-height: 24px;
+    font: font.$text-md-medium;
   }
 }
 
