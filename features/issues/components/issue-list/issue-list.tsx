@@ -4,6 +4,8 @@ import { useGetProjects } from "@features/projects";
 import { useGetIssues } from "../../api/use-get-issues";
 import { IssueRow } from "./issue-row";
 import styles from "./issue-list.module.scss";
+import { IssueLevel, IssueStatus } from "@api/issues.types";
+import { useEffect, useState } from "react";
 
 export function IssueList() {
   const router = useRouter();
@@ -11,10 +13,37 @@ export function IssueList() {
   const navigateToPage = (newPage: number) =>
     router.push({
       pathname: router.pathname,
-      query: { page: newPage },
+      query: { ...router.query, page: newPage },
     });
 
-  const issuesPage = useGetIssues(page);
+  const [resolution, setResolution] = useState<string | null>(null);
+  const [level, setLevel] = useState<string | null>(null);
+  const [projectName, setProjectName] = useState("");
+
+  const resolutionValues: { [key: string]: IssueStatus } = {
+    Resolved: IssueStatus.resolved,
+    Unresolved: IssueStatus.open,
+  };
+
+  const levelValues: { [key: string]: IssueLevel } = {
+    Error: IssueLevel.error,
+    Warning: IssueLevel.warning,
+    Info: IssueLevel.info,
+  };
+
+  useEffect(() => {
+    setResolution((router.query.resolution as string) ?? null);
+    setLevel((router.query.level as string) ?? null);
+    setProjectName((router.query.projectName as string) ?? "");
+  }, [router.query]);
+
+  const filters = {
+    status: resolution ? resolutionValues[resolution] : undefined,
+    level: level ? levelValues[level] : undefined,
+    project: projectName || undefined,
+  };
+
+  const issuesPage = useGetIssues(page, filters);
   const projects = useGetProjects();
 
   if (projects.isLoading || issuesPage.isLoading) {

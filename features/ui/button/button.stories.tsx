@@ -17,9 +17,16 @@ const Template: StoryFn<typeof Button> = ({
   icon,
   iconUrl,
   children,
+  disabled,
 }) => (
   <div style={{ padding: 10 }}>
-    <Button color={color} size={size} icon={icon} iconUrl={iconUrl}>
+    <Button
+      color={color}
+      size={size}
+      icon={icon}
+      iconUrl={iconUrl}
+      disabled={disabled}
+    >
       {children}
     </Button>
   </div>
@@ -32,4 +39,5 @@ Default.args = {
   icon: ButtonIcon.leading,
   iconUrl: "/icons/circle.svg",
   children: "Label",
+  disabled: false,
 };
