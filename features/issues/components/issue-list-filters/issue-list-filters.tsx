@@ -20,6 +20,9 @@ export function IssueListFilters() {
   }, [router]);
 
   function updateResolution(newResolution: string | null) {
+    // Reset to page 1 when filters change
+    delete router.query.page;
+
     if (newResolution) {
       router.push({
         pathname: router.pathname,
@@ -32,6 +35,9 @@ export function IssueListFilters() {
   }
 
   function updateLevel(newLevel: string | null) {
+    // Reset to page 1 when filters change
+    delete router.query.page;
+
     if (newLevel) {
       router.push({
         pathname: router.pathname,
@@ -44,6 +50,9 @@ export function IssueListFilters() {
   }
 
   function updateProjectName(newProjectName: string | null) {
+    // Reset to page 1 when filters change
+    delete router.query.page;
+
     if (newProjectName) {
       router.push({
         pathname: router.pathname,
