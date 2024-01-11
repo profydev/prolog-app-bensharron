@@ -1,20 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import styles from "./input.module.scss";
 
 interface InputProps {
+  className?: string;
+  currValue?: string;
   placeholder: string;
   icon?: string;
   label?: string;
   hint?: string;
   error?: boolean;
-  errorMsg: string;
+  errorMsg?: string;
   disabled?: boolean;
   onChange: (value: string) => void;
 }
 
 export function Input({
+  className,
+  currValue,
   placeholder,
   icon,
   label,
@@ -33,8 +37,12 @@ export function Input({
     onChange(value);
   };
 
+  useEffect(() => {
+    setValue(currValue ?? null);
+  }, [currValue]);
+
   return (
-    <div className={classNames(styles.container)}>
+    <div className={classNames(styles.container, className)}>
       {label && (
         <label className={styles.label} htmlFor="inputBox">
           {label}
@@ -53,7 +61,7 @@ export function Input({
         <input
           id="inputBox"
           className={styles.inputBox}
-          value={value || ""}
+          value={value ?? ""}
           placeholder={placeholder}
           disabled={disabled}
           onChange={onChangeInput}

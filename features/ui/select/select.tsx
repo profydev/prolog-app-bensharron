@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import styles from "./select.module.scss";
 
@@ -9,18 +9,22 @@ type SelectOption = {
 };
 
 interface SelectProps {
+  className?: string;
   options: SelectOption[];
+  currValue?: string | null;
   placeholder: string;
   icon?: string;
   label?: string;
   hint?: string;
   error?: string;
   disabled?: boolean;
-  onChange: (value: string) => void;
+  onChange: (value: string | null) => void;
 }
 
 export function Select({
+  className,
   options,
+  currValue,
   placeholder,
   icon,
   label,
@@ -38,14 +42,28 @@ export function Select({
     }
   }
 
-  const onClickOption = (value: string) => {
-    setValue(value);
+  const onClickOption = (newValue: string) => {
+    if (value !== newValue) {
+      setValue(newValue);
+      onChange(newValue);
+    } else {
+      // Deselect option
+      setValue(null);
+      onChange(null);
+    }
+
     setOpen(false);
-    onChange(value);
   };
 
+  useEffect(() => {
+    setValue(currValue ?? null);
+  }, [currValue]);
+
   return (
-    <div className={classNames(styles.container)}>
+    <div
+      className={classNames(styles.container, className)}
+      onBlur={() => setOpen(false)}
+    >
       {label && <label className={styles.label}>{label}</label>}
 
       <div
@@ -64,7 +82,7 @@ export function Select({
             value && styles.selectedText,
           )}
         >
-          {value || placeholder}
+          {value ?? placeholder}
         </div>
         <img
           alt="dropdown arrow"
@@ -79,7 +97,7 @@ export function Select({
               styles.option,
               value === option.value && styles.selected,
             )}
-            onClick={() => onClickOption(option.value)}
+            onMouseDown={() => onClickOption(option.value)}
           >
             <div className={styles.item}>{option.value}</div>
             {value === option.value && (

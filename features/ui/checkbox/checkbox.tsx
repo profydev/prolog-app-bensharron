@@ -13,7 +13,8 @@ export enum CheckboxState {
   partlyChecked = "partlyChecked",
 }
 
-interface CheckboxProps extends React.ComponentPropsWithoutRef<"label"> {
+interface CheckboxProps {
+  className?: string;
   size?: CheckboxSize;
   label: string;
   state?: CheckboxState;
@@ -21,17 +22,16 @@ interface CheckboxProps extends React.ComponentPropsWithoutRef<"label"> {
 }
 
 export function Checkbox({
+  className,
   size = CheckboxSize.small,
   label,
   state = CheckboxState.unchecked,
   disabled = false,
-  ...props
 }: CheckboxProps) {
   return (
     <label
-      {...props}
       className={classNames(
-        props.className,
+        className,
         styles.customCheckbox,
         size && styles[size],
       )}
@@ -40,6 +40,7 @@ export function Checkbox({
       <input
         type="checkbox"
         id="checkmark"
+        className={styles.checkbox}
         disabled={disabled}
         ref={(input) => {
           if (input) {
