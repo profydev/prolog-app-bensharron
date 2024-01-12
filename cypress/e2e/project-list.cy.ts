@@ -7,6 +7,27 @@ describe("Project List", () => {
       fixture: "projects.json",
       delay: 1000,
     }).as("getProjects");
+    cy.intercept(
+      "GET",
+      "https://prolog-api.profy.dev/issue?page=1&project=Frontend+-+Web",
+      {
+        fixture: "issues-page-1-frontend.json",
+      },
+    ).as("getIssuesFrontend");
+    cy.intercept(
+      "GET",
+      "https://prolog-api.profy.dev/issue?page=1&project=Backend",
+      {
+        fixture: "issues-backend.json",
+      },
+    ).as("getIssuesBackend");
+    cy.intercept(
+      "GET",
+      "https://prolog-api.profy.dev/issue?page=1&project=ML+Service",
+      {
+        fixture: "issues-ml.json",
+      },
+    ).as("getIssuesML");
 
     // open projects page
     cy.visit("http://localhost:3000/dashboard");
@@ -80,8 +101,36 @@ describe("Project List", () => {
             .should("have.css", "color", badgeColors[index]);
           cy.wrap($el)
             .find("a")
-            .should("have.attr", "href", "/dashboard/issues");
+            .should("have.attr", "href")
+            .and("include", "/dashboard/issues");
         });
+    });
+
+    it("filters issues by project by links", () => {
+      const projectIntercepts = [
+        "@getIssuesFrontend",
+        "@getIssuesBackend",
+        "@getIssuesML",
+      ];
+
+      mockProjects.forEach((mockProject, index) => {
+        // open projects page
+        cy.visit("http://localhost:3000/dashboard");
+
+        // wait for request to resolve
+        cy.wait("@getProjects");
+
+        // Click 'View Issues' Link
+        cy.get("main").contains("li", mockProject.name).find("a").click();
+
+        // wait for request to resolve
+        cy.wait(projectIntercepts[index]);
+
+        cy.get('input[placeholder="Project Name"]').should(
+          "have.value",
+          mockProjects[index].name,
+        );
+      });
     });
   });
 });
