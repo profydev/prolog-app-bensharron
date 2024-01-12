@@ -95,21 +95,24 @@ export function IssueList() {
           <button
             className={styles.paginationButton}
             onClick={() => navigateToPage(page - 1)}
-            disabled={page === 1}
+            disabled={!meta?.hasPreviousPage}
           >
             Previous
           </button>
           <button
             className={styles.paginationButton}
             onClick={() => navigateToPage(page + 1)}
-            disabled={page === meta?.totalPages}
+            disabled={!meta?.hasNextPage}
           >
             Next
           </button>
         </div>
         <div className={styles.pageInfo}>
-          Page <span className={styles.pageNumber}>{meta?.currentPage}</span> of{" "}
-          <span className={styles.pageNumber}>{meta?.totalPages}</span>
+          Page{" "}
+          <span className={styles.pageNumber}>
+            {meta?.totalPages ? meta?.currentPage : 0}
+          </span>{" "}
+          of <span className={styles.pageNumber}>{meta?.totalPages}</span>
         </div>
       </div>
     </div>
