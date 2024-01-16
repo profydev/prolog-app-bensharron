@@ -4,9 +4,10 @@
 
 .container {
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   flex-direction: column;
   gap: 0.375rem;
+  width: 18.25rem;
 }
 
 .label {
@@ -16,7 +17,6 @@
 
 .dropdown {
   display: flex;
-  max-width: 18.25rem;
   gap: 0.5rem;
   align-items: center;
   align-self: stretch;
@@ -29,8 +29,8 @@
   font: font.$text-md-regular;
 
   .selectText {
+    flex: 1 0 0;
     color: color.$gray-500;
-    width: 100%;
 
     &.selectedText {
       color: color.$gray-900;
@@ -77,8 +77,8 @@
   padding: 0.25rem 0;
   flex-direction: column;
   flex: 1 0 0;
-  max-width: 320px;
   align-items: flex-start;
+  align-self: stretch;
   flex-shrink: 0;
   border-radius: 8px;
   background: white;
@@ -92,7 +92,6 @@
 
   .option {
     display: flex;
-    max-width: 18.25rem;
     gap: 0.5rem;
     align-items: center;
     align-self: stretch;
@@ -111,7 +110,7 @@
 
     .item {
       display: flex;
-      width: 100%;
+      flex: 1 0 0;
       color: color.$gray-900;
       font: font.$text-md-regular;
     }

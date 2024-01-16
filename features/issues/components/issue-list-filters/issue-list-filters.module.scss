@@ -1,34 +1,52 @@
+@use "@styles/breakpoint";
 @use "@styles/color";
 @use "@styles/space";
 @use "@styles/font";
 
 .filtersBar {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column-reverse;
   gap: space.$s4;
-  align-self: stretch;
   margin-bottom: space.$s6;
+
+  @media (min-width: breakpoint.$desktop) {
+    flex-direction: row;
+  }
 }
 
 .filters {
   display: flex;
-  height: 2.75rem;
-  justify-content: flex-end;
-  align-items: center;
+  flex-direction: column;
   gap: space.$s4;
-  flex: 1 0 0;
+
+  @media (min-width: breakpoint.$desktop) {
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
+  }
 }
 
 .select {
   display: flex;
-  width: 10rem;
-  height: 2.75rem;
+  width: 100%;
 
-  // Dropdown needs to be over the issues table
-  z-index: 1;
+  @media (min-width: breakpoint.$desktop) {
+    width: 10rem;
+    height: 2.75rem;
+    justify-content: start;
+
+    // Dropdown needs to be over the issues table in desktop mode
+    z-index: 1;
+  }
 }
 
 .input {
   display: flex;
-  width: 17.5rem;
+  width: 100%;
+
+  @media (min-width: breakpoint.$desktop) {
+    width: 17.5rem;
+    justify-content: start;
+  }
 }
