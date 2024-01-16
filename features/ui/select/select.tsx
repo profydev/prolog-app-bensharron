@@ -73,7 +73,7 @@ export function Select({
           disabled && styles.disabled,
           error && styles.errorBox,
         )}
-        onClick={onClickDropdown}
+        onMouseDown={onClickDropdown}
       >
         {icon && <img alt="icon" src={icon} />}
         <div

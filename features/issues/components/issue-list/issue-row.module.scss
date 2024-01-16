@@ -1,26 +1,100 @@
+@use "@styles/breakpoint";
 @use "@styles/color";
 @use "@styles/space";
 @use "@styles/font";
+
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  padding: space.$s3 space.$s6;
+  gap: 8px;
+  box-sizing: border-box;
+  max-width: 100%;
+  border-radius: 8px;
+  border: 1px solid color.$gray-200;
+  box-shadow:
+    0 1px 2px 0 rgb(16 24 40 / 6%),
+    0 1px 3px 0 rgb(16 24 40 / 10%);
+
+  @media (min-width: breakpoint.$desktop) {
+    display: table-row;
+    padding: 0;
+    border: unset;
+    box-shadow: unset;
+  }
+}
 
 .row:nth-child(2n) {
   background: color.$gray-50;
 }
 
 .cell {
+  align-items: center;
   padding: space.$s4 space.$s6;
   color: color.$gray-500;
   font: font.$text-sm-regular;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: table-cell;
+    vertical-align: middle;
+  }
 }
 
 .issueCell {
-  composes: cell;
   display: flex;
+  gap: 12px;
+  padding: space.$s4 space.$s0;
+  align-self: stretch;
+
+  @media (min-width: breakpoint.$desktop) {
+    padding: space.$s4 space.$s6;
+  }
+}
+
+.desktopStat {
+  display: none;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: table-cell;
+  }
+}
+
+.mobileStats {
+  display: flex;
+  justify-content: space-between;
+  align-self: stretch;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: none;
+  }
+}
+
+.mobileStat {
+  display: flex;
+  flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
+  flex: 1 0 0;
 }
 
 .languageIcon {
   width: space.$s10;
   margin-right: space.$s3;
+}
+
+.errorText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+
+  @media (min-width: breakpoint.$desktop) {
+    white-space: wrap;
+  }
 }
 
 .errorTypeAndMessage {

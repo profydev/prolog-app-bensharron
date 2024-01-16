@@ -1,40 +1,92 @@
+@use "@styles/breakpoint";
 @use "@styles/color";
 @use "@styles/space";
 @use "@styles/font";
 
 .container {
   background: white;
-  border: 1px solid color.$gray-200;
-  box-sizing: border-box;
-  box-shadow:
-    0 4px 8px -2px rgb(16 24 40 / 10%),
-    0 2px 4px -2px rgb(16 24 40 / 6%);
   border-radius: space.$s2;
   overflow: hidden;
+
+  @media (min-width: breakpoint.$desktop) {
+    border: 1px solid color.$gray-200;
+    box-sizing: border-box;
+    box-shadow:
+      0 4px 8px -2px rgb(16 24 40 / 10%),
+      0 2px 4px -2px rgb(16 24 40 / 6%);
+  }
 }
 
 .table {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   width: 100%;
   border-collapse: collapse;
+  align-self: stretch;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: table;
+  }
+}
+
+.headerGroup {
+  display: none;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: table-header-group;
+  }
 }
 
 .headerRow {
-  border-bottom: 1px solid color.$gray-200;
+  display: none;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: table-row;
+    border-bottom: 1px solid color.$gray-200;
+  }
 }
 
 .headerCell {
-  padding: space.$s3 space.$s6;
-  text-align: left;
-  color: color.$gray-500;
-  font: font.$text-xs-medium;
+  display: none;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: table-cell;
+    padding: space.$s3 space.$s6;
+    text-align: left;
+    color: color.$gray-500;
+    font: font.$text-xs-medium;
+  }
+}
+
+.rowGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  gap: 1rem;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: table-row-group;
+  }
 }
 
 .paginationContainer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: space.$s4 space.$s6;
-  border-top: 1px solid color.$gray-200;
+  padding: space.$s4 0;
+
+  @media (min-width: breakpoint.$desktop) {
+    justify-content: space-between;
+    flex-grow: unset;
+    padding: space.$s4 space.$s6;
+    border-top: 1px solid color.$gray-200;
+  }
+}
+
+.paginationButtons {
+  display: flex;
+  flex-grow: 1;
 }
 
 .paginationButton {
@@ -45,15 +97,38 @@
   box-shadow: 0 1px 2px rgb(16 24 40 / 5%);
   border-radius: 6px;
   cursor: pointer;
+
+  &.navigate {
+    display: none;
+
+    @media (min-width: breakpoint.$desktop) {
+      display: flex;
+    }
+  }
+
+  &.loadMore {
+    flex: 1 0 0;
+
+    @media (min-width: breakpoint.$desktop) {
+      display: none;
+    }
+  }
 }
 
 .paginationButton:not(:first-of-type) {
-  margin-left: space.$s3;
+  @media (min-width: breakpoint.$desktop) {
+    margin-left: space.$s3;
+  }
 }
 
 .pageInfo {
+  display: none;
   color: color.$gray-700;
   font: font.$text-sm-regular;
+
+  @media (min-width: breakpoint.$desktop) {
+    display: unset;
+  }
 }
 
 .pageNumber {

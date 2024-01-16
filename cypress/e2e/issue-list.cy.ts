@@ -132,6 +132,7 @@ describe("Issue List", () => {
     // set button aliases
     cy.get("button").contains("Previous").as("prev-button");
     cy.get("button").contains("Next").as("next-button");
+    cy.get("button").contains("Load more").as("load-more-button");
 
     // set filter aliases
     cy.get("div").contains("Resolution").as("resolution-select");
@@ -153,8 +154,8 @@ describe("Issue List", () => {
 
     it("renders the issues", () => {
       cy.get("main")
-        .find("tbody")
-        .find("tr")
+        .find("[data-cy=tbody]")
+        .find("[data-cy=tr]")
         .each(($el, index) => {
           const issue = mockIssues1.items[index];
           const firstLineOfStackTrace = issue.stack.split("\n")[1].trim();
@@ -175,19 +176,25 @@ describe("Issue List", () => {
       cy.get("@next-button").click();
       cy.get("@prev-button").should("not.have.attr", "disabled");
       cy.contains("Page 2 of 3");
-      cy.get("tbody tr:first").contains(mockIssues2.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssues2.items[0].message,
+      );
 
       // test navigation to third and last page
       cy.get("@next-button").click();
       cy.get("@next-button").should("have.attr", "disabled");
       cy.contains("Page 3 of 3");
-      cy.get("tbody tr:first").contains(mockIssues3.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssues3.items[0].message,
+      );
 
       // test navigation back to second page
       cy.get("@prev-button").click();
       cy.get("@next-button").should("not.have.attr", "disabled");
       cy.contains("Page 2 of 3");
-      cy.get("tbody tr:first").contains(mockIssues2.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssues2.items[0].message,
+      );
     });
 
     it("persists page after reload", () => {
@@ -208,19 +215,25 @@ describe("Issue List", () => {
       // test first page
       cy.contains("Page 1 of 3");
       cy.get("@prev-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssuesOpen1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesOpen1.items[0].message,
+      );
 
       // test navigation to second page
       cy.get("@next-button").click();
       cy.get("@prev-button").should("not.have.attr", "disabled");
       cy.contains("Page 2 of 3");
-      cy.get("tbody tr:first").contains(mockIssuesOpen2.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesOpen2.items[0].message,
+      );
 
       // test navigation to third and last page
       cy.get("@next-button").click();
       cy.get("@next-button").should("have.attr", "disabled");
       cy.contains("Page 3 of 3");
-      cy.get("tbody tr:first").contains(mockIssuesOpen3.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesOpen3.items[0].message,
+      );
 
       // select Resolved issues
       cy.get("@unresolved-option").click();
@@ -229,7 +242,9 @@ describe("Issue List", () => {
       // test first page
       cy.contains("Page 1 of 1");
       cy.get("@prev-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssuesResolved.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesResolved.items[0].message,
+      );
 
       // deselect Resolved issues
       cy.get("@resolved-option").click();
@@ -238,7 +253,9 @@ describe("Issue List", () => {
       // test first page
       cy.contains("Page 1 of 3");
       cy.get("@prev-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssues1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssues1.items[0].message,
+      );
     });
 
     it("persists resolution after reload", () => {
@@ -246,12 +263,16 @@ describe("Issue List", () => {
       cy.get("@resolution-select").click();
       cy.get("@unresolved-option").click();
 
-      cy.get("tbody tr:first").contains(mockIssuesOpen1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesOpen1.items[0].message,
+      );
 
       cy.reload();
       cy.wait(["@getProjects", "@getIssuesPage1Open"]);
       cy.wait(1500);
-      cy.get("tbody tr:first").contains(mockIssuesOpen1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesOpen1.items[0].message,
+      );
     });
 
     it("filters issues by level", () => {
@@ -262,14 +283,18 @@ describe("Issue List", () => {
       // test first page
       cy.contains("Page 1 of 2");
       cy.get("@prev-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssuesError1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesError1.items[0].message,
+      );
 
       // test navigation to second page
       cy.get("@next-button").click();
       cy.get("@prev-button").should("not.have.attr", "disabled");
       cy.get("@next-button").should("have.attr", "disabled");
       cy.contains("Page 2 of 2");
-      cy.get("tbody tr:first").contains(mockIssuesError2.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesError2.items[0].message,
+      );
 
       // select Warning issues
       cy.get("@error-option").click();
@@ -278,14 +303,18 @@ describe("Issue List", () => {
       // test first page
       cy.contains("Page 1 of 2");
       cy.get("@prev-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssuesWarning1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesWarning1.items[0].message,
+      );
 
       // test navigation to second page
       cy.get("@next-button").click();
       cy.get("@prev-button").should("not.have.attr", "disabled");
       cy.get("@next-button").should("have.attr", "disabled");
       cy.contains("Page 2 of 2");
-      cy.get("tbody tr:first").contains(mockIssuesWarning2.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesWarning2.items[0].message,
+      );
 
       // select Info issues
       cy.get("@warning-option").click();
@@ -295,7 +324,9 @@ describe("Issue List", () => {
       cy.contains("Page 1 of 1");
       cy.get("@prev-button").should("have.attr", "disabled");
       cy.get("@next-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssuesInfo.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesInfo.items[0].message,
+      );
 
       // deselect Info issues
       cy.get("@info-option").click();
@@ -304,7 +335,9 @@ describe("Issue List", () => {
       // test first page
       cy.contains("Page 1 of 3");
       cy.get("@prev-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssues1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssues1.items[0].message,
+      );
     });
 
     it("persists level after reload", () => {
@@ -312,12 +345,16 @@ describe("Issue List", () => {
       cy.get("@level-select").click();
       cy.get("@error-option").click();
 
-      cy.get("tbody tr:first").contains(mockIssuesError1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesError1.items[0].message,
+      );
 
       cy.reload();
       cy.wait(["@getProjects", "@getIssuesPage1Error"]);
       cy.wait(1500);
-      cy.get("tbody tr:first").contains(mockIssuesError1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesError1.items[0].message,
+      );
     });
 
     it("filters issues by project", () => {
@@ -331,19 +368,25 @@ describe("Issue List", () => {
       // test first page
       cy.contains("Page 1 of 3");
       cy.get("@prev-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssuesFrontend1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesFrontend1.items[0].message,
+      );
 
       // test navigation to second page
       cy.get("@next-button").click();
       cy.get("@prev-button").should("not.have.attr", "disabled");
       cy.contains("Page 2 of 3");
-      cy.get("tbody tr:first").contains(mockIssuesFrontend2.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesFrontend2.items[0].message,
+      );
 
       // test navigation to third page
       cy.get("@next-button").click();
       cy.get("@prev-button").should("not.have.attr", "disabled");
       cy.contains("Page 3 of 3");
-      cy.get("tbody tr:first").contains(mockIssuesFrontend3.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesFrontend3.items[0].message,
+      );
 
       // select Backend issues
       cy.get("@project-input").clear();
@@ -357,7 +400,9 @@ describe("Issue List", () => {
       cy.contains("Page 1 of 1");
       cy.get("@prev-button").should("have.attr", "disabled");
       cy.get("@next-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssuesBackend.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesBackend.items[0].message,
+      );
 
       // deselect Backend issues
       cy.get("@project-input").clear();
@@ -365,7 +410,9 @@ describe("Issue List", () => {
       // test first page
       cy.contains("Page 1 of 3");
       cy.get("@prev-button").should("have.attr", "disabled");
-      cy.get("tbody tr:first").contains(mockIssues1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssues1.items[0].message,
+      );
     });
 
     it("persists project after reload", () => {
@@ -376,12 +423,52 @@ describe("Issue List", () => {
         })
         .should("have.value", "frontend");
 
-      cy.get("tbody tr:first").contains(mockIssuesFrontend1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesFrontend1.items[0].message,
+      );
 
       cy.reload();
       cy.wait(["@getProjects", "@getIssuesPage1Frontend"]);
       cy.wait(1500);
-      cy.get("tbody tr:first").contains(mockIssuesFrontend1.items[0].message);
+      cy.get("[data-cy=tbody] [data-cy=tr]:first").contains(
+        mockIssuesFrontend1.items[0].message,
+      );
+    });
+  });
+
+  context("mobile resolution", () => {
+    beforeEach(() => {
+      cy.viewport("iphone-8");
+    });
+
+    it("renders the issues", () => {
+      cy.get("main")
+        .get("[data-cy=tbody]")
+        .get("[data-cy=tr]")
+        .each(($el, index) => {
+          const issue = mockIssues1.items[index];
+          const firstLineOfStackTrace = issue.stack.split("\n")[1].trim();
+          cy.wrap($el).contains(issue.name);
+          cy.wrap($el).contains(issue.message);
+          cy.wrap($el).contains(issue.numEvents);
+          cy.wrap($el).contains(issue.numUsers);
+          cy.wrap($el).contains(firstLineOfStackTrace);
+        });
+    });
+
+    it("loads more data", () => {
+      // test loading issues from second page
+      cy.get("@load-more-button").click();
+      cy.get("[data-cy=tbody] [data-cy=tr]")
+        .eq(10)
+        .contains(mockIssues2.items[0].message);
+
+      // test loading issues from last page
+      cy.get("@load-more-button").click();
+      cy.get("@load-more-button").should("have.attr", "disabled");
+      cy.get("[data-cy=tbody] [data-cy=tr]")
+        .eq(20)
+        .contains(mockIssues3.items[0].message);
     });
   });
 });
